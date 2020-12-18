@@ -1,0 +1,11 @@
+.ui-menu {
+    width: 250px;
+}
+
+.ui-menu-item-wrapper {
+    height: 50px;
+}
+
+.container {
+  display: flex;
+}
