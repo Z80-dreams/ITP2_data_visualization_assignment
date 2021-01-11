@@ -163,6 +163,18 @@ function StockChart() {
       this.endDateSelector.option(stockData.date[i], i);
     }
 
+
+    // Get min and max data for year, volume and $. This is to be updated on the fly when user selects different dates.
+    this.minDate = stockData.date[stockData.date.length-1]; //Assume first date is at the bottom.
+    this.maxDate = stockData.date[0];
+
+    this.minValue = min(stockData.low);
+    this.maxValue = max(stockData.high);
+
+    this.minVolume = min(stockData.volume);
+    this.maxVolume = max(stockData.volume);
+
+
     //Fill in chart types.
     this.chartTypeSelector.option("Select chart type here");
     for(i=0; i<chartTypes.length; i++) {
@@ -208,9 +220,8 @@ function StockChart() {
 
 
 
+    // Modify the name of the company in the datastructure.
 
-
-    // Modify the name of the company.
     if(stockData.changed) {
 
       for(i = 0; i<this.indexData.rows.length; i++)
@@ -225,8 +236,12 @@ function StockChart() {
       //To make sure we don't run this loop more than necessary.
     }
 
+
+
+
     // Check to see that dates don't overlap.
-    if(this.startDateSelector.value() > this.endDateSelector.value()) {
+    var daysApart = this.endDateSelector.value() - this.startDateSelector.value()
+    if(daysApart < 0) {
       push();
       textSize(32);
       fill(0);
@@ -259,21 +274,7 @@ function StockChart() {
     this.endDay = this.endDateSelector.value();
     this.endDay++//minimum of one day must be displayed.
 
-    // Adjusting the min and max values after date has been set.
-    var tempMinValue = [];
-    var tempMaxValue = [];
-    var tempVolume = [];
-
-    for(i=this.startDay; i<=this.endDay; i++) {
-      tempMaxValue.push(stockData.high[i]);
-      tempMinValue.push(stockData.low[i]);
-      tempVolume.push(stockData.volume[i]);
-    }
-
-    this.minValue = min(tempMinValue)-this.layoutUpper.inChartMargin;
-    this.maxValue = max(tempMaxValue)+this.layoutUpper.inChartMargin;
-    this.minVolume = min(tempVolume)*(1-this.layoutLower.inChartMargin);
-    this.maxVolume = max(tempVolume)*(1+this.layoutLower.inChartMargin);
+    this.updateChart();
 
     //Setting parameters for printing
 
@@ -294,16 +295,30 @@ function StockChart() {
       var x = this.mapDaysToWidth(i);
 
 
-
-
-
-
       this.stockChartIcons(x, entryWidth, high, low, open, close, volume, chartType, this.layoutUpper, this.layoutLower);
     }
 
     //stockChartIcons()
 
 
+  };
+
+  this.updateChart = function() {
+    // Adjusting the min and max values after date has been set.
+    var tempMinValue = [];
+    var tempMaxValue = [];
+    var tempVolume = [];
+
+    for(i=this.startDay; i<=this.endDay; i++) {
+      tempMaxValue.push(stockData.high[i]);
+      tempMinValue.push(stockData.low[i]);
+      tempVolume.push(stockData.volume[i]);
+    }
+
+    this.minValue = min(tempMinValue)-this.layoutUpper.inChartMargin;
+    this.maxValue = max(tempMaxValue)+this.layoutUpper.inChartMargin;
+    this.minVolume = min(tempVolume)*(1-this.layoutLower.inChartMargin);
+    this.maxVolume = max(tempVolume)*(1+this.layoutLower.inChartMargin);
   };
 
   this.loadNewDataSet = function() {
