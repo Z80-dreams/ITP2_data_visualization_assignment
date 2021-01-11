@@ -72,7 +72,7 @@ function PayGapTimeSeries() {
     this.endYear = this.data.getNum(this.data.getRowCount() - 1, 'year');
 
     // Find min and max pay gap for mapping to canvas height.
-    this.minPayGap = 0;         // Pay equality (zero pay gap).
+    this.minPayGap = min(this.data.getColumn('pay_gap'));;         // Pay equality (zero pay gap).
     this.maxPayGap = max(this.data.getColumn('pay_gap'));
   };
 
@@ -110,19 +110,24 @@ function PayGapTimeSeries() {
 
     // Loop over all rows and draw a line from the previous value to
     // the current.
+
     for (var i = 0; i < this.data.getRowCount(); i++) {
 
       // Create an object to store data for the current year.
       var current = {
         // Convert strings to numbers.
-        'year': this.data.getNum(i, 'year'),
-        'payGap': this.data.getNum(i, 'pay_gap')
+        'year': this.data.getString(i, 0),
+        'payGap': this.data.getNum(i, 3)
       };
 
       if (previous != null) {
         // Draw line segment connecting previous year to current
         // year pay gap.
-        stroke(0);
+        // Changing colour depending on paygap.
+        var colour = this.mapPayGapToColour(current.payGap);
+        stroke(colour[0], colour[1], colour[2]);
+
+
         line(this.mapYearToWidth(previous.year),
              this.mapPayGapToHeight(previous.payGap),
              this.mapYearToWidth(current.year),
@@ -144,6 +149,7 @@ function PayGapTimeSeries() {
       // position of the next line segment.
       previous = current;
     }
+
   };
 
   this.drawTitle = function() {
@@ -168,7 +174,39 @@ function PayGapTimeSeries() {
     return map(value,
                this.minPayGap,
                this.maxPayGap,
-               this.layout.bottomMargin, // Smaller pay gap at bottom.
-               this.layout.topMargin);   // Bigger pay gap at top.
+               this.layout.bottomMargin,
+               this.layout.topMargin);
+  };
+
+  this.mapPayGapToColour = function(value) {
+
+      var maxRed = 200;
+      var minRed = 0;
+      var maxGreen = 0;
+      var minGreen = 250;
+      var maxBlue = 0;
+      var minBlue = 0;
+
+
+
+      var redPart = map(value,
+                        this.minPayGap,
+                        this.maxPayGap,
+                        minRed,
+                        maxRed);
+
+      var greenPart = map(value,
+                          this.minPayGap,
+                          this.maxPayGap,
+                          minGreen,
+                          maxGreen);
+
+      var bluePart = map(value,
+                        this.minPayGap,
+                        this.maxPayGap,
+                        minBlue,
+                        maxBlue);
+
+      return [redPart, greenPart, bluePart];
   };
 }

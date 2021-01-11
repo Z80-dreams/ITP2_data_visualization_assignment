@@ -5,11 +5,12 @@ var gallery;
 
 function setup() {
   // Create a canvas to fill the content div from index.html.
-  canvasContainer = $('#app');
+  canvasContainer = select('#app');
   var c = createCanvas(1024, 576);
   c.parent('app');
 
   // Create a new gallery object.
+  var menuContainer = select('#menu');
   gallery = new Gallery();
 
   // Add the visualisation objects here.
@@ -18,6 +19,9 @@ function setup() {
   gallery.addVisual(new PayGapByJob2017());
   gallery.addVisual(new PayGapTimeSeries());
   gallery.addVisual(new ClimateChange());
+  gallery.addVisual(new StockChart());
+
+
 }
 
 function draw() {

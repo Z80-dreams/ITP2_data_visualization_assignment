@@ -9,10 +9,6 @@
     <!-- Libraries -->
     <script src="lib/p5.min.js"></script>
     <script src="lib/p5.dom.min.js"></script>
-    <link rel="stylesheet"
-          href="lib/jquery-ui-themes-1.12.1/themes/ui-lightness/jquery-ui.min.css">
-    <script src="lib/jquery-3.3.1.min.js"></script>
-    <script src="lib/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
 
@@ -25,16 +21,21 @@
     <script src="pay-gap-by-job-2017.js"></script>
     <script src="pay-gap-1997-2017.js"></script>
     <script src="climate-change.js"></script>
+    <script src="stock-chart.js"></script>
+
 
     <!-- Add extra scripts below -->
     <script src="helper-functions.js"></script>
     <script src="gallery.js"></script>
     <script src="pie-chart.js"></script>
-    <script src="menu.js"></script>
   </head>
   <body>
+    <div id="menu" class="menu">
+      <table id="visuals-menu">
+      </table>
+    </div>
     <div id="app" class="container">
-      <ul id="visuals-menu"></ul>
+      <!-- "<ul id="visuals-menu"></ul> Replace list with <table> to make a ribbon type menu. Put in div above. -->
     </div>
   </body>
 </html>

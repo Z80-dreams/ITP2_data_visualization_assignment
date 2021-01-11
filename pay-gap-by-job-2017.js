@@ -82,14 +82,10 @@ function PayGapByJob2017() {
       // x = propFemale
       // y = payGap
       // size = numJobs
-      ellipse(
-        map(propFemale[i], propFemaleMin, propFemaleMax,
-            this.pad, width - this.pad),
-        map(payGap[i], payGapMin, payGapMax,
-            height - this.pad, this.pad),
-        map(numJobs[i], numJobsMin, numJobsMax,
-            this.dotSizeMin, this.dotSizeMax)
-      );
+        
+      ellipse(map(this.data.getNum(i, 'proportion_female'), propFemaleMin, propFemaleMax, 0 + this.pad, width - this.pad),
+              map(this.data.getNum(i, 'pay_gap'), payGapMin, payGapMax, height - this.pad, 0 + this.pad),
+              map(this.data.getNum(i, 'num_jobs'), numJobsMin, numJobsMax, this.dotSizeMin, this.dotSizeMax));
     }
   };
 
@@ -107,5 +103,35 @@ function PayGapByJob2017() {
          height / 2,
          width - this.pad,
          height / 2);
+      
+    // Add ticks
+    var noTicksX = 10;
+    var noTicksY = 10;
+      
+    
+    for(i = 0; i<=noTicksX; i++)
+    {
+        line((0 + this.pad + i * ((width - 2 * this.pad) / noTicksX)),
+             height/2-5,
+             (0 + this.pad + i * ((width - 2 * this.pad) / noTicksX)),
+             height/2+5);
+    }
+      
+    for(i = 0; i<=noTicksY; i++)
+    {
+        line(width/2-5,
+             (0 + this.pad + i * ((height - 2 * this.pad) / noTicksY)),
+             width/2+5,
+             (0 + this.pad + i * ((height - 2 * this.pad) / noTicksY)));
+    }
+      
+    // Add label
+    push();
+    fill(0);
+    noStroke();
+    text("Proportion Female", width-this.pad-100, height/2 + this.pad);
+    text("Pay Gap", width/2-this.pad-30, this.pad + 10);
+    pop();
+    
   };
 }

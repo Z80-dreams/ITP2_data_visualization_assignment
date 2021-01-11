@@ -10,6 +10,17 @@ function TechDiversityRace() {
   // Property to represent whether data has been loaded.
   this.loaded = false;
 
+  var marginsize = 35;
+
+  this.layout = {
+      marginSize: marginsize,
+      leftMargin: marginsize * 10,
+      rightMargin: width - marginsize,
+      topMargin: marginsize + gallery.getTopMargin,
+      bottomMargin: height - marginsize * 2
+
+  };
+
   // Preload the data. This function is called automatically by the
   // gallery when a visualisation is added.
   this.preload = function() {
@@ -29,20 +40,27 @@ function TechDiversityRace() {
       return;
     }
 
+
     // Create a select DOM element.
     this.select = createSelect();
-    this.select.position(300, 20);
+
+    // Set select position.
+    this.select.position(this.layout.leftMargin, this.layout.bottomMargin+100);
 
     // Fill the options with all company names.
-    var companies = this.data.columns;
-    // First entry is empty.
-    for (let i = 1; i < companies.length; i++) {
-      this.select.option(companies[i]);
+    for(i=0; i<this.data.columns.length; i++)
+    {
+        if(this.data.columns[i] != "")
+        {
+            this.select.option(this.data.columns[i]);
+        }
+
     }
+
   };
 
-  this.destroy = function() {
-    removeElements();
+    this.destroy = function() {
+    this.select.remove();
   };
 
   // Create a new pie chart object.
@@ -75,5 +93,6 @@ function TechDiversityRace() {
 
     // Draw the pie chart!
     this.pie.draw(col, labels, colours, title);
+    this.pie.checkMouse(mouseX, mouseY);
   };
 }

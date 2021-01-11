@@ -85,13 +85,13 @@ function ClimateChange() {
                                     this.maxYear - 1,
                                     this.minYear,
                                     1);
-    this.startSlider.position(400, 10);
+    this.startSlider.position(400, 10 + Gallery.getTopMargin);
 
     this.endSlider = createSlider(this.minYear + 1,
                                   this.maxYear,
                                   this.maxYear,
                                   1);
-    this.endSlider.position(600, 10);
+    this.endSlider.position(600, 10 + Gallery.getTopMargin);
   };
 
   this.destroy = function() {
@@ -165,8 +165,8 @@ function ClimateChange() {
         fill(this.mapTemperatureToColour(current.temperature));
         rect(this.mapYearToWidth(previous.year),
              this.layout.topMargin,
-             segmentWidth,
-             this.layout.plotHeight());
+             this.mapYearToWidth(current.year)-this.mapYearToWidth(previous.year),
+             this.layout.bottomMargin-this.layout.topMargin);
 
         // Draw line segment connecting previous year to current
         // year temperature.
